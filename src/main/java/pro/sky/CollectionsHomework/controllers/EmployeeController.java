@@ -33,7 +33,7 @@ public class EmployeeController {
         return employeeService.findEmployee(firstName, lastName);
     }
     @GetMapping("/get")
-    public String getEmployees() {
-        return employeeService.getEmployees().toString();
+    public List<Employee> getEmployees() {
+        return employeeService.getEmployees();
     }
 }

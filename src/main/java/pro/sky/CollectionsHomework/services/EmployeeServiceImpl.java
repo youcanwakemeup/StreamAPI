@@ -17,11 +17,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee removeEmployee(String firstName, String lastName) {
         Employee temp = new Employee(firstName, lastName);
-                for (Employee employee : employees) {
-                    if (employee.equals(temp)) {
-                        employees.remove(temp);
-                        return temp;
-                    }
+                if (employees.contains(temp)) {
+                    employees.remove(temp);
+                    return temp;
                 }
         throw new EmployeeNotFoundException("Сотрудник не найден");
     }
@@ -31,10 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new EmployeeStorageIsFullException("Нельзя добавлять больше сотрудников");
         }
         Employee temp = new Employee(firstName, lastName);
-        for (Employee employee : employees) {
-            if (employee.equals(temp)) {
-                throw new EmployeeAlreadyAddedException("Сотрудник уже добавлен");
-            }
+        if (employees.contains(temp)) {
+            throw new EmployeeAlreadyAddedException("Такой сотрудник уже добавлен");
         }
         employees.add(temp);
         return temp;
@@ -42,15 +38,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee findEmployee(String firstName, String lastName) {
         Employee temp = new Employee(firstName, lastName);
-        for (Employee employee : employees) {
-            if (employee.equals(temp)) {
-                return temp;
-            }
+        if (employees.contains(temp)) {
+            return temp;
         }
         throw new EmployeeNotFoundException("Сотрудник не найден");
     }
     @Override
     public List<Employee> getEmployees() {
-        return employees;
+        return new ArrayList<>(employees);
     }
 }

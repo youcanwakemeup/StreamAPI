@@ -12,6 +12,7 @@ import pro.sky.CollectionsHomework.exceptions.EmployeeNotFoundException;
 import pro.sky.CollectionsHomework.exceptions.EmployeeStorageIsFullException;
 import pro.sky.CollectionsHomework.services.EmployeeService;
 
+import java.util.Collection;
 import java.util.List;
 @RequestMapping("/employee")
 @RestController
@@ -33,7 +34,7 @@ public class EmployeeController {
         return employeeService.findEmployee(firstName, lastName);
     }
     @GetMapping("/get")
-    public List<Employee> getEmployees() {
+    public Collection<Employee> getEmployees() {
         return employeeService.getEmployees();
     }
 }

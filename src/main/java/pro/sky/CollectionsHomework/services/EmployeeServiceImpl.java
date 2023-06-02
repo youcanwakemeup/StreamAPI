@@ -10,12 +10,13 @@ import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private Map<String, Employee> employees;
-    public EmployeeServiceImpl() {this.employees = new HashMap<>();}
+    public static Map<String, Employee> employees;
+    protected EmployeeServiceImpl() {
+        employees = new HashMap<>();}
 
     @Override
-    public Employee removeEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+    public Employee removeEmployee(String firstName, String lastName, int salary, int department) {
+        Employee employee = new Employee(firstName, lastName, salary, department);
                 if (employees.containsKey(employee.getFullName())) {
                     return employees.remove(employee);
 
@@ -23,8 +24,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         throw new EmployeeNotFoundException("Сотрудник не найден");
     }
     @Override
-    public Employee addEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+    public Employee addEmployee(String firstName, String lastName, int salary, int department) {
+        Employee employee = new Employee(firstName, lastName, salary, department);
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException("Такой сотрудник уже добавлен");
         }
@@ -32,8 +33,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
     @Override
-    public Employee findEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+    public Employee findEmployee(String firstName, String lastName,  int salary, int department) {
+        Employee employee = new Employee(firstName, lastName, salary, department);
         if (employees.containsKey(employee.getFullName())) {
             return employee;
         }

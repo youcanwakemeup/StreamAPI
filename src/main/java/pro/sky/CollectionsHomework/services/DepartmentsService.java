@@ -8,5 +8,5 @@ public interface DepartmentsService {
     Employee maxSalary(int department);
     Employee minSalary(int department);
     String employeesByDepartment();
-    Collection<Employee> employeesInDepartment(int department);
+    Collection<Employee> employeesInDepartment(int department); //
 }

@@ -13,8 +13,7 @@ import java.util.*;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     public static Map<String, Employee> employees;
-    protected EmployeeServiceImpl() {
-        employees = new HashMap<>();}
+    protected EmployeeServiceImpl() {employees = new HashMap<>();}
 
     @Override
     public Employee removeEmployee(String firstName, String lastName, int salary, int department) {
@@ -33,20 +32,33 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     @Override
     public Employee addEmployee(String firstName, String lastName, int salary, int department) {
-        Employee employee = new Employee(firstName, lastName, salary, department);
-        if (employees.containsKey(employee.getFullName())) {
-            throw new EmployeeAlreadyAddedException("Такой сотрудник уже добавлен");
+        if (StringUtils.containsOnly(firstName, "[a-zA-Z]+") && StringUtils.containsOnly(lastName, "[a-zA-Z]+")) {
+            firstName = StringUtils.capitalize(firstName);
+            lastName = StringUtils.capitalize(lastName);
+            Employee employee = new Employee(firstName, lastName, salary, department);
+            if (employees.containsKey(employee.getFullName())) {
+                throw new EmployeeAlreadyAddedException("Такой сотрудник уже добавлен");
+            }
+            employees.put(employee.getFullName(), employee);
+            return employee;
+    } else {
+            throw new NameIsNotCorrectException("Имя или фамилия не верны!");
         }
-        employees.put(employee.getFullName(), employee);
-        return employee;
     }
+
     @Override
     public Employee findEmployee(String firstName, String lastName,  int salary, int department) {
-        Employee employee = new Employee(firstName, lastName, salary, department);
-        if (employees.containsKey(employee.getFullName())) {
-            return employee;
+        if (StringUtils.containsOnly(firstName, "[a-zA-Z]+") && StringUtils.containsOnly(lastName, "[a-zA-Z]+")) {
+            firstName = StringUtils.capitalize(firstName);
+            lastName = StringUtils.capitalize(lastName);
+            Employee employee = new Employee(firstName, lastName, salary, department);
+            if (employees.containsKey(employee.getFullName())) {
+                return employee;
+            }
+            throw new EmployeeNotFoundException("Сотрудник не найден");
+        } else {
+            throw new NameIsNotCorrectException("Имя или фамилия не верны!");
         }
-        throw new EmployeeNotFoundException("Сотрудник не найден");
     }
     @Override
     public Collection<Employee> getEmployees() {

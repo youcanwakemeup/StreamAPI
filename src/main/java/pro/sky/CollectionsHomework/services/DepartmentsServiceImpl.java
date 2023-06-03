@@ -5,6 +5,7 @@ import pro.sky.CollectionsHomework.Employee;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,15 +30,15 @@ public class DepartmentsServiceImpl implements DepartmentsService {
     }
     @Override
     public String employeesByDepartment() {
-        return "1 department:" + employeesDepartment.values().stream()
-                .filter(e -> e.getDepartment() == 1)
-                .collect(Collectors.toList()) +
-                "2 department:" + employeesDepartment.values().stream()
-                .filter(e -> e.getDepartment() == 2)
-                .collect(Collectors.toList()) +
-                "3 department:" + employeesDepartment.values().stream()
-                .filter(e -> e.getDepartment() == 3)
-                .collect(Collectors.toList());
+        Map<Integer, List<Employee>> employeesByDepartment = employeesDepartment.values().stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment));
+        StringBuilder result = new StringBuilder();
+        for (Map.Entry<Integer, List<Employee>> entry : employeesByDepartment.entrySet()) {
+            int department = entry.getKey();
+            List<Employee> employees = entry.getValue();
+            result.append(department).append(" отдел: ").append(employees);
+        }
+        return result.toString();
     }
     @Override
     public Collection<Employee> employeesInDepartment(int department) {

@@ -8,6 +8,8 @@ import pro.sky.CollectionsHomework.Employee;
 import pro.sky.CollectionsHomework.services.DepartmentsService;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/departments")
 @RestController
@@ -27,7 +29,7 @@ public class DepartmentsController {
         return departmentsService.employeesInDepartment(department);
     }
     @GetMapping("/all")
-    public String printAllEmployeesByDepartment() {
+    public Map<Integer, List<Employee>> printAllEmployeesByDepartment() {
         return departmentsService.employeesByDepartment();
     }
 }

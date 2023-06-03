@@ -8,12 +8,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public class DepartmentsServiceImpl implements DepartmentsService {
     private Map<String, Employee> employeesDepartment;
     public DepartmentsServiceImpl() {this.employeesDepartment = EmployeeServiceImpl.employees;}
+    EmployeeService employeeService = new EmployeeServiceImpl();
     @Override
     public Employee maxSalary(int department) {
         return employeesDepartment.values().stream()
@@ -29,16 +32,10 @@ public class DepartmentsServiceImpl implements DepartmentsService {
                 .orElse(null);
     }
     @Override
-    public String employeesByDepartment() {
-        Map<Integer, List<Employee>> employeesByDepartment = employeesDepartment.values().stream()
-                .collect(Collectors.groupingBy(Employee::getDepartment));
-        StringBuilder result = new StringBuilder();
-        for (Map.Entry<Integer, List<Employee>> entry : employeesByDepartment.entrySet()) {
-            int department = entry.getKey();
-            List<Employee> employees = entry.getValue();
-            result.append(department).append(" отдел: ").append(employees);
-        }
-        return result.toString();
+    public Map<Integer, List<Employee>> employeesByDepartment() {
+        return employeeService.getEmployees().stream()
+                .sorted(comparing(Employee::getLastName).thenComparing(Employee::getFirstName))
+                .collect(groupingBy(Employee::getDepartment));
     }
     @Override
     public Collection<Employee> employeesInDepartment(int department) {

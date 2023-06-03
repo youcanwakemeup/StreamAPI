@@ -17,7 +17,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee removeEmployee(String firstName, String lastName, int salary, int department) {
-        if (StringUtils.containsOnly(firstName, "[a-zA-Z]+") && StringUtils.containsOnly(lastName, "[a-zA-Z]+")) {
+        if (validateInput(firstName, lastName)) {
             firstName = StringUtils.capitalize(firstName);
             lastName = StringUtils.capitalize(lastName);
             Employee employee = new Employee(firstName, lastName, salary, department);
@@ -32,7 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     @Override
     public Employee addEmployee(String firstName, String lastName, int salary, int department) {
-        if (StringUtils.containsOnly(firstName, "[a-zA-Z]+") && StringUtils.containsOnly(lastName, "[a-zA-Z]+")) {
+        if (validateInput(firstName, lastName)) {
             firstName = StringUtils.capitalize(firstName);
             lastName = StringUtils.capitalize(lastName);
             Employee employee = new Employee(firstName, lastName, salary, department);
@@ -41,14 +41,15 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
             employees.put(employee.getFullName(), employee);
             return employee;
-    } else {
+        }
+        else {
             throw new NameIsNotCorrectException("Имя или фамилия не верны!");
         }
     }
 
     @Override
     public Employee findEmployee(String firstName, String lastName,  int salary, int department) {
-        if (StringUtils.containsOnly(firstName, "[a-zA-Z]+") && StringUtils.containsOnly(lastName, "[a-zA-Z]+")) {
+        if (validateInput(firstName, lastName)) {
             firstName = StringUtils.capitalize(firstName);
             lastName = StringUtils.capitalize(lastName);
             Employee employee = new Employee(firstName, lastName, salary, department);
@@ -56,7 +57,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 return employee;
             }
             throw new EmployeeNotFoundException("Сотрудник не найден");
-        } else {
+        }
+        else {
             throw new NameIsNotCorrectException("Имя или фамилия не верны!");
         }
     }
@@ -64,4 +66,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Collection<Employee> getEmployees() {
         return Collections.unmodifiableCollection(employees.values());
     }
-}//
+    @Override
+    public Boolean validateInput(String firstName, String lastName) {
+        return StringUtils.containsOnly(firstName, "[a-zA-Z]+") && StringUtils.containsOnly(lastName, "[a-zA-Z]+");
+    }
+}

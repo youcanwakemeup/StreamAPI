@@ -14,6 +14,8 @@ import pro.sky.CollectionsHomework.services.EmployeeService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+
 @RequestMapping("/employee")
 @RestController
 public class EmployeeController {
@@ -34,7 +36,7 @@ public class EmployeeController {
         return employeeService.findEmployee(firstName, lastName, salary, department);
     }
     @GetMapping("/get")
-    public Collection<Employee> getEmployees() {
+    public Map<String, Employee> getEmployees() {
         return employeeService.getEmployees();
     }
 }

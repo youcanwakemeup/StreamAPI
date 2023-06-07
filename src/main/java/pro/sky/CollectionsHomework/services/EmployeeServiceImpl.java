@@ -5,15 +5,18 @@ import org.springframework.stereotype.Service;
 import pro.sky.CollectionsHomework.Employee;
 import pro.sky.CollectionsHomework.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.CollectionsHomework.exceptions.EmployeeNotFoundException;
-import pro.sky.CollectionsHomework.exceptions.EmployeeStorageIsFullException;
 import pro.sky.CollectionsHomework.exceptions.NameIsNotCorrectException;
 
 import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    public static Map<String, Employee> employees;
-    protected EmployeeServiceImpl() {employees = new HashMap<>();}
+    private Map<String, Employee> employees;
+
+    public EmployeeServiceImpl(Map<String, Employee> employees) {
+        this.employees = employees;
+    }
+
 
     @Override
     public Employee removeEmployee(String firstName, String lastName, int salary, int department) {
@@ -47,27 +50,28 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    @Override
-    public Employee findEmployee(String firstName, String lastName,  int salary, int department) {
-        if (validateInput(firstName, lastName)) {
-            firstName = StringUtils.capitalize(firstName);
-            lastName = StringUtils.capitalize(lastName);
-            Employee employee = new Employee(firstName, lastName, salary, department);
-            if (employees.containsKey(employee.getFullName())) {
-                return employee;
+        @Override
+        public Employee findEmployee(String firstName, String lastName,  int salary, int department) {
+            if (validateInput(firstName, lastName)) {
+                firstName = StringUtils.capitalize(firstName);
+                lastName = StringUtils.capitalize(lastName);
+                Employee employee = new Employee(firstName, lastName, salary, department);
+                if (employees.containsKey(employee.getFullName())) {
+                    return employee;
+                }
+                throw new EmployeeNotFoundException("Сотрудник не найден");
             }
-            throw new EmployeeNotFoundException("Сотрудник не найден");
+            else {
+                throw new NameIsNotCorrectException("Имя или фамилия не верны!");
+            }
         }
-        else {
-            throw new NameIsNotCorrectException("Имя или фамилия не верны!");
-        }
-    }
     @Override
-    public Collection<Employee> getEmployees() {
-        return Collections.unmodifiableCollection(employees.values());
+    public Map<String, Employee> getEmployees() {
+        return employees;
     }
     @Override
     public Boolean validateInput(String firstName, String lastName) {
-        return StringUtils.containsOnly(firstName, "[a-zA-Z]+") && StringUtils.containsOnly(lastName, "[a-zA-Z]+");
+        return StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName);
     }
+
 }

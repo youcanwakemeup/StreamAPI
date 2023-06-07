@@ -1,9 +1,6 @@
 package pro.sky.CollectionsHomework.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pro.sky.CollectionsHomework.Employee;
 import pro.sky.CollectionsHomework.services.DepartmentsService;
 
@@ -20,16 +17,22 @@ public class DepartmentsController {
     public Employee maxSalary(@RequestParam int department) {
         return departmentsService.maxSalary(department);
     }
+
     @GetMapping("/min-salary")
     public Employee minSalary(@RequestParam int department) {
         return departmentsService.minSalary(department);
     }
-    @GetMapping("/all")
-    public Collection<Employee> printEmployeesInDepartment(@RequestParam int department) {
+
+    @GetMapping("/all/{department}")
+    public Collection<Employee> printEmployeesInDepartment(@PathVariable int department) {
         return departmentsService.employeesInDepartment(department);
     }
     @GetMapping("/all")
     public Map<Integer, List<Employee>> printAllEmployeesByDepartment() {
         return departmentsService.employeesByDepartment();
+    }
+    @GetMapping("/sum")
+    public int totalSalaryByDepartment(@RequestParam int department) {
+        return departmentsService.salaryByDepartment(department);
     }
 }

@@ -10,5 +10,6 @@ public interface DepartmentsService {
     Employee maxSalary(int department);
     Employee minSalary(int department);
     Map<Integer, List<Employee>> employeesByDepartment();
-    Collection<Employee> employeesInDepartment(int department); //
+    Collection<Employee> employeesInDepartment(int department);
+    int salaryByDepartment(int department);
 }
